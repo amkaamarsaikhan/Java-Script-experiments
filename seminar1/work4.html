@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL-5</title>
+    <link rel=icon href="images/js-favicon.png">
+    <style>
+        :root {
+            --main-bg: oklch(100% 0 0);
+            --main-text: oklch(32.1% 0.043 250.7);
+            --accent-color: oklch(65.8% 0.147 248.8);
+            --card-bg: oklch(98.1% 0.003 247.9);
+            --border-color: oklch(90% 0.01 250);
+        }
+
+        .dark-theme {
+            --main-bg: oklch(22.6% 0 0);
+            --main-text: oklch(95.5% 0.009 224.2);
+            --accent-color: oklch(56.3% 0.122 249.2);
+            --card-bg: oklch(28.4% 0 0);
+            --border-color: oklch(40% 0.01 224.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin-top: 100px;
+            background-color: var(--main-bg);
+            color: var(--main-text);
+            transition: background-color 0.3s, color 0.3s;
+            margin-left: -1px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 100px;
+            padding: 40px 20px -10px 20px;
+        }
+
+        .dropdown-container {
+            position: absolute;
+            bottom: 100px;
+            right: 40px;
+            width: 140px;
+            z-index: 1000;
+        }
+
+        .custom-dropdown {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            outline: none;
+            font-size: 0.85rem;
+            user-select: none;
+        }
+
+        .dropdown-header {
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            list-style: none;
+            padding: 5px;
+            margin: 0;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1)
+        }
+
+        .custom-dropdown.open .dropdown-list {
+            display: block;
+        }
+
+        .dropdown-option {
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .dropdown-option:hover {
+            background: color-mix(in oklch, var(--accent-color) 10%, transparent);
+        }
+
+        .dropdown-option.selected {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            ;
+        }
+
+        .tab-header {
+            display: flex;
+            background: color-mix(in oklch, var(--accent-color) 8%, transparent);
+            padding: 8px;
+            gap: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 10px;
+            border: none;
+            background: none;
+            color: var(--main-text);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 12px;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: white;
+            opacity: 1;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .counter-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .display-num {
+            font-size: 1.8rem;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        button.cnt-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--accent-color);
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        button.cnt-btn:active {
+            transform: scale(0.9);
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            background: var(--accent-color);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-main:hover {
+            opacity: 0.9;
+        }
+
+        .btn-reset {
+            background: none;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            background: color-mix(in oklch, var(--accent-color) 12%, transparent);
+            min-height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dropdown-container">
+        <div class="custom-dropdown" id="theme-dropdown" tabindex="0">
+            <div class="dropdown-header">
+                <span id="current-theme-text">🌕 Light</span>
+                <span>▼</span>
+            </div>
+            <ul class="dropdown-list">
+                <li class="dropdown-option selected" data-value="light">🌕 Light</li>
+                <li class="dropdown-option" data-value="dark">🌑 Dark</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tab-header" role="tablist">
+            <button class="tab-btn active" data-tab="finder-tab">🔎 Search</button>
+            <button class="tab-btn" data-tab="info-tab">ℹ️ Info</button>
+            <button class="tab-btn" data-tab="settings-tab">⚙️ Settings</button>
+        </div>
+
+        <div id="finder-tab" class="tab-content active">
+            <h3 style="text-align: center; margin-top: 0;">🚪 Door Locator</h3>
+            <div class="control-group">
+                <span class="control-label">Entrances (M)</span>
+                <div class="counter-controls">
+                    <button class="cnt-btn" data-key="m" data-step="-1">−</button>
+                    <span class="display-num" id="m-val">0</span>
+                    <button class="cnt-btn" data-key="m" data-step="1">+</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <span class="control-label">Floors (O)</span>
+                <div class="counter-controls">
+                    <button class="cnt-btn" data-key="o" data-step="-1">−</button>
+                    <span class="display-num" id="o-val">0</span>
+                    <button class="cnt-btn" data-key="o" data-step="1">+</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <span class="control-label">Doors per Floor (K)</span>
+                <div class="counter-controls">
+                    <button class="cnt-btn" data-key="k" data-step="-1">−</button>
+                    <span class="display-num" id="k-val">0</span>
+                    <button class="cnt-btn" data-key="k" data-step="1">+</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <span class="control-label">Target Door Number (N)</span>
+                <div class="counter-controls">
+                    <button class="cnt-btn" data-key="n" data-step="-1">−</button>
+                    <span class="display-num" id="n-val" style="color: var(--accent-color)">1</span>
+                    <button class="cnt-btn" data-key="n" data-step="1">+</button>
+                </div>
+            </div>
+            <button class="btn-main" id="calc-btn">Locate Door</button>
+            <div id="result">Address will appear here...</div>
+        </div>
+
+        <div id="info-tab" class="tab-content">
+            <h3>Instructions</h3>
+            <p>This application calculates the specific location (Entrance and Floor) of an apartment based on its door
+                number.
+            </p>
+            <ul style="padding-left: 20px; line-height: 1.8;">
+                <li><b>M:</b> Total number of entrances in the building.</li>
+                <li><b>O:</b> Total number of floors per entrance.</li>
+                <li><b>K:</b> Number of apartment doors on each floor.</li>
+                <li><b>N:</b> The door number you are looking for.</li>
+            </ul>
+        </div>
+
+        <div id="settings-tab" class="tab-content">
+            <h3>Settings</h3>
+            <p style="margin-bottom: 20px;">Manage your application data here.</p>
+            <button class="btn-reset" id="reset-n" style="width: 100%;">Reset All Values</button>
+        </div>
+    </div>
+
+    <script src="header.js"></script>
+    <script>
+
+        let state = { m: 0, o: 0, k: 0, n: 1 };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const resultDiv = document.getElementById('result');
+            const dropdown = document.getElementById('theme-dropdown');
+            const themeText = document.getElementById('current-theme-text');
+            const options = document.querySelectorAll('.dropdown-option');
+
+            // --- Theme Toggle Logic ---
+            dropdown.addEventListener('click', (e) => {
+                dropdown.classList.toggle('open');
+                e.stopPropagation();
+            });
+
+            options.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    const theme = option.dataset.value;
+                    themeText.textContent = option.textContent;
+
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+
+                    if (theme === 'dark') document.body.classList.add('dark-theme');
+                    else document.body.classList.remove('dark-theme');
+
+                    dropdown.classList.remove('open');
+                    e.stopPropagation();
+                });
+            });
+            document.addEventListener('click', () => dropdown.classList.remove('open'));
+
+            // Tab Switching Logic
+            function switchTab(index) {
+                tabButtons.forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                tabButtons[index].classList.add('active');
+                tabButtons[index].setAttribute('aria-selected', 'true');
+                const targetId = tabButtons[index].dataset.tab;
+                document.getElementById(targetId).classList.add('active');
+            }
+
+            tabButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    currentTabIndex = index; // 👈 sync
+                    switchTab(index);
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                let currentTabIndex = Array.from(tabButtons).findIndex(b => b.classList.contains('active'));
+                if (e.key === 'ArrowRight') {
+                    currentTabIndex = currentTabIndex + 1;
+                    switchTab(Math.min(currentTabIndex, tabButtons.length - 1));
+                } else if (e.key === 'ArrowLeft') {
+                    currentTabIndex = currentTabIndex - 1;
+                    switchTab(Math.max(currentTabIndex, 0));
+                }
+            })
+
+
+            // Counter Controls
+            document.querySelectorAll('.cnt-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const key = btn.dataset.key;
+                    const step = parseInt(btn.dataset.step);
+                    state[key] = Math.max(1, state[key] + step);
+                    document.getElementById(`${key}-val`).textContent = state[key];
+                });
+            });
+
+            // Calculation
+            document.getElementById('calc-btn').addEventListener('click', () => {
+                const { m, o, k, n } = state;
+                const perEntrance = o * k;
+                const totalDoors = m * perEntrance;
+
+                if (n > totalDoors) {
+                    resultDiv.innerHTML = `<span style="color:red">❌ Door #${n} not found in this building.</span>`;
+                    return;
+                }
+
+                const entrance = Math.ceil(n / perEntrance);
+                const relativePos = n - (entrance - 1) * perEntrance;
+                const floor = Math.ceil(relativePos / k);
+                const door = relativePos % k || k;
+
+                resultDiv.innerHTML = `📍 <b>Ent: ${entrance}</b>, <b>Floor: ${floor}</b>, <b>Door: ${door}</b>`;
+            });
+
+            // Reset
+            document.getElementById('reset-n').addEventListener('click', () => {
+                state = { m: 0, o: 0, k: 0, n: 1 };
+                ['m', 'o', 'k', 'n'].forEach(key => {
+                    document.getElementById(`${key}-val`).textContent = state[key];
+                });
+                resultDiv.innerHTML = "Address will appear here...";
+                switchTab(0);
+            });
+
+        });
+    </script>
+</body>
+
+</html>

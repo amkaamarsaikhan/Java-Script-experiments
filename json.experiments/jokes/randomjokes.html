@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>😂 Random Joke Generator (JSON)</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            max-width: 400px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #3b82f6;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>😂 Random Joke</h2>
+    <p id="setup">Click the button!</p>
+    <p id="punchline"></p>
+    <button id="joke-btn">New Joke</button>
+</div>
+
+<script>
+    const setupEl = document.getElementById("setup");
+    const punchlineEl = document.getElementById("punchline");
+    const btn = document.getElementById("joke-btn");
+
+    let jokes = [];
+
+    // 🔹 JSON файл унших
+    fetch("jokes.json")
+        .then(res => res.json())
+        .then(data => {
+            jokes = data;
+        })
+        .catch(() => {
+            setupEl.textContent = "Failed to load jokes 😢";
+        });
+
+    function getRandomJoke() {
+        if (jokes.length === 0) return;
+
+        const randomIndex = Math.floor(Math.random() * jokes.length);
+        const joke = jokes[randomIndex];
+
+        setupEl.textContent = joke.setup;
+        punchlineEl.textContent = joke.punchline;
+    }
+
+    btn.addEventListener("click", getRandomJoke);
+</script>
+
+</body>
+</html>

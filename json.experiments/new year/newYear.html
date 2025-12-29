@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎆 New Year Celebration 2026</title>
+
+<style>
+:root{
+    --card-bg: rgba(2,6,23,.85);
+    --box-bg:#1e293b;
+    --accent:#38bdf8;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    font-family:Segoe UI,system-ui,sans-serif;
+    background:radial-gradient(ellipse at bottom,#1b2735 0%,#090a0f 100%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+/* 🎆 Fireworks canvas */
+#fireworksCanvas{
+    position:fixed;
+    inset:0;
+    z-index:5;
+    pointer-events:none;
+}
+
+/* ❄️ Snowflake */
+.snow{
+    position:fixed;
+    top:-20px;
+    color:white;
+    user-select:none;
+    pointer-events:none;
+    z-index:10;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    0%{transform:translateY(-20px) rotate(0deg);opacity:0}
+    20%{opacity:1}
+    100%{transform:translateY(100vh) rotate(360deg);opacity:0}
+}
+
+/* ⏳ Card */
+.card{
+    z-index:20;
+    width:360px;
+    padding:40px 30px;
+    background:var(--card-bg);
+    backdrop-filter:blur(15px);
+    border-radius:24px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 25px 50px rgba(0,0,0,.6);
+}
+
+h2{
+    margin-bottom:25px;
+    letter-spacing:2px;
+    font-weight:300;
+    color:var(--accent);
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:25px;
+    background:var(--box-bg);
+    color:white;
+    border:1px solid rgba(255,255,255,.2);
+    outline:none;
+}
+
+.time{
+    display:flex;
+    gap:10px;
+}
+
+.box{
+    flex:1;
+    background:var(--box-bg);
+    padding:15px 5px;
+    border-radius:15px;
+}
+
+.number{
+    font-size:1.6rem;
+    font-weight:800;
+    color:var(--accent);
+}
+
+.label{
+    font-size:.7rem;
+    opacity:.7;
+    display:block;
+    margin-top:5px;
+}
+
+/* 🎵 Music button */
+#music-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    font-size:20px;
+    border:none;
+    border-radius:50%;
+    padding:15px;
+    cursor:pointer;
+    background:var(--accent);
+    box-shadow:0 0 15px var(--accent);
+    z-index:30;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworksCanvas"></canvas>
+
+<!-- 🎵 Background music -->
+<audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🎇 Firework sound -->
+<audio id="fireworkSound">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-firework-explosion-1689.mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-btn">🎵</button>
+
+<div class="card">
+    <h2 id="title">⏳ COUNTDOWN</h2>
+    <select id="eventSelect"></select>
+
+    <div class="time">
+        <div class="box"><span class="number" id="days">00</span><span class="label">Өдөр</span></div>
+        <div class="box"><span class="number" id="hours">00</span><span class="label">Цаг</span></div>
+        <div class="box"><span class="number" id="minutes">00</span><span class="label">Мин</span></div>
+        <div class="box"><span class="number" id="seconds">00</span><span class="label">Сек</span></div>
+    </div>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const events=[
+ {name:"Шинэ жил 2026",date:"2026-01-01T00:00:00"},
+ {name:"Тест (10 сек)",date:new Date(Date.now()+10000).toISOString()}
+];
+
+let targetDate=null;
+let celebrated=false;
+
+/* ---------- ELEMENTS ---------- */
+const select=document.getElementById("eventSelect");
+const music=document.getElementById("bgMusic");
+const fireSound=document.getElementById("fireworkSound");
+const btn=document.getElementById("music-btn");
+
+/* ---------- MUSIC ---------- */
+btn.onclick=()=>{
+    if(music.paused){music.play();btn.textContent="⏸️"}
+    else{music.pause();btn.textContent="🎵"}
+};
+
+/* ---------- EVENTS ---------- */
+events.forEach((e,i)=>{
+    const o=document.createElement("option");
+    o.value=i;o.textContent=e.name;
+    select.appendChild(o);
+});
+setTarget(0);
+
+select.onchange=e=>setTarget(e.target.value);
+
+function setTarget(i){
+    targetDate=new Date(events[i].date);
+    celebrated=false;
+    document.getElementById("title").textContent="⏳ COUNTDOWN";
+    const c=document.getElementById("fireworksCanvas");
+    c.getContext("2d").clearRect(0,0,c.width,c.height);
+}
+
+/* ---------- COUNTDOWN ---------- */
+setInterval(()=>{
+    if(!targetDate)return;
+    const diff=targetDate-new Date();
+
+    if(diff<=0){
+        if(!celebrated)startCelebration();
+        update(0,0,0,0);
+        return;
+    }
+
+    update(
+        Math.floor(diff/86400000),
+        Math.floor(diff/3600000)%24,
+        Math.floor(diff/60000)%60,
+        Math.floor(diff/1000)%60
+    );
+},1000);
+
+function update(d,h,m,s){
+    days.textContent=String(d).padStart(2,"0");
+    hours.textContent=String(h).padStart(2,"0");
+    minutes.textContent=String(m).padStart(2,"0");
+    seconds.textContent=String(s).padStart(2,"0");
+}
+
+/* ---------- SNOW ---------- */
+function createSnow(){
+    for(let i=0;i<250;i++){
+        const s=document.createElement("div");
+        s.className="snow";
+        s.textContent="❄";
+        s.style.left=Math.random()*100+"vw";
+        s.style.fontSize=Math.random()*14+10+"px";
+        s.style.animationDuration=Math.random()*8+5+"s";
+        s.style.animationDelay=Math.random()*10+"s";
+        document.body.appendChild(s);
+    }
+}
+
+/* ---------- FIREWORKS ---------- */
+function startCelebration(){
+    celebrated=true;
+    document.getElementById("title").textContent="🎆 HAPPY NEW YEAR 🎆";
+    music.play();
+    fireworks();
+}
+
+function fireworks(){
+    const canvas=document.getElementById("fireworksCanvas");
+    const ctx=canvas.getContext("2d");
+    canvas.width=innerWidth;
+    canvas.height=innerHeight;
+    const particles=[];
+
+    class P{
+        constructor(x,y,c){
+            this.x=x;this.y=y;this.c=c;
+            this.vx=(Math.random()-.5)*12;
+            this.vy=(Math.random()-.5)*12;
+            this.a=1;
+        }
+        draw(){
+            ctx.globalAlpha=this.a;
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,2.5,0,Math.PI*2);
+            ctx.fillStyle=this.c;
+            ctx.fill();
+        }
+        update(){
+            this.vy+=0.05;
+            this.x+=this.vx;
+            this.y+=this.vy;
+            this.a-=0.015;
+        }
+    }
+
+    function animate(){
+        if(!celebrated)return;
+        requestAnimationFrame(animate);
+        ctx.fillStyle="rgba(0,0,0,.2)";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        if(Math.random()<0.08){
+            fireSound.currentTime=0;
+            fireSound.play();
+            const x=Math.random()*canvas.width;
+            const y=Math.random()*canvas.height/2;
+            const c=`hsl(${Math.random()*360},100%,60%)`;
+            for(let i=0;i<40;i++)particles.push(new P(x,y,c));
+        }
+
+        particles.forEach((p,i)=>{
+            if(p.a<=0)particles.splice(i,1);
+            else{p.update();p.draw();}
+        });
+    }
+    animate();
+}
+
+createSnow();
+</script>
+</body>
+</html>

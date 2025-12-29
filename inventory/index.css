@@ -1,0 +1,45 @@
+body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        input,
+        button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 5px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 3s ease;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateY(100px);
+        }
+
+        .total {
+            font-weight: bold;
+            margin-top: 15px;
+        }

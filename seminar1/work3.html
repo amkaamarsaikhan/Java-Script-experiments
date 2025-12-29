@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>dark-theme</title>
+    <link rel="stylesheet" href="index.css">
+        <link rel="icon" href="images/js-favicon.png">
+    <style>
+        :root {
+            --main-bg: oklch(100% 0 0);
+            --main-text: oklch(32.1% 0.043 250.7);
+            --accent-color: oklch(65.8% 0.147 248.8);
+            --card-bg: oklch(98.1% 0.003 247.9);
+            --border-color: oklch(90% 0.01 250);
+        }
+
+        .dark-theme {
+            --main-bg: oklch(22.6% 0 0);
+            --main-text: oklch(95.5% 0.009 224.2);
+            --accent-color: oklch(56.3% 0.122 249.2);
+            --card-bg: oklch(28.4% 0 0);
+            --border-color: oklch(40% 0.01 224.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--main-bg);
+            color: var(--main-text);
+            transition: all 0.5s ease;
+            margin-left: -1px;
+
+        }
+
+        #theme-toggle-btn {
+            padding: 10px 20px;
+            margin: 300px;
+            background: var(--accent-color);
+            color: var(--main-text);
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            box-shadow: 0 0 15px var(--accent-color);
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="theme-toggle-btn" class="dark-theme">click</button>
+
+
+    <script src="header.js"></script>
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle-btn');
+        const body = document.querySelector('body');
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                toggleBtn.textContent = 'go to lighter theme';
+            } else {
+                toggleBtn.textContent = 'go to darker theme';
+            }
+        });
+    </script>
+</body>
+
+</html>
