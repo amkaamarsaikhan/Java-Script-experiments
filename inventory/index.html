@@ -6,22 +6,21 @@
     <title>Inventory UI</title>
     <link rel="stylesheet" href="index.css">
 </head>
-
 <body>
+    <h1>📦 Inventory System</h1>
 
-    <h1>📦 Inventory system</h1>
+   <div class="input-group">
+    <input type="text" id="itemName" placeholder="Барааны нэр" />
+    <input type="number" id="itemPrice" placeholder="Үнэ" />
+    <input type="number" id="itemQuantity" placeholder="Тоо ширхэг" />
+    <button id="addBtn">Нэмэх</button>
+</div>
 
-    <input type="text" id="name" placeholder="name" />
-    <input type="number" id="price" placeholder="price" />
-    <input type="number" id="quantity" placeholder="quantity" />
-    <button id="addBtn">Add</button>
+<ul id="list"></ul>
+<p class="total-section">Нийт: $<span id="total">0</span></p>
+<button id="themeToggle" class="theme-btn">🌙</button>
 
-    <h2>📋 list</h2>
-    <ul id="list"></ul>
-
-    <p class="total">total price: $<span id="total">0</span></p>
-
-    <script src="index.js"></script>
+<script src="index.js"></script>
 </body>
 
 </html>
