@@ -1,105 +1,79 @@
-// ======= CLASS =======
 class Item {
-  constructor(name, price, quantity) {
-    this.name = name;
-    this.price = price;
-    this.quantity = quantity;
-  }
-
-  getTotalPrice() {
-    return this.price * this.quantity;
-  }
+    constructor(name, price, quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+    getTotalPrice() { return this.price * this.quantity; }
 }
 
 class Inventory {
-  constructor() {
-    this.items = [];
-  }
-
-  addItem(item) {
-    this.items.push(item);
-  }
-
-  removeItem(name) {
-    this.items = this.items.filter(item => item.name !== name);
-  }
-
-  getInventoryValue() {
-    return this.items.reduce(
-      (sum, item) => sum + item.getTotalPrice(),
-      0
-    );
-  }
+    constructor() { this.items = []; }
+    addItem(item) { this.items.push(item); }
+    removeItem(name) { this.items = this.items.filter(i => i.name !== name); }
+    getInventoryValue() { return this.items.reduce((s, i) => s + i.getTotalPrice(), 0); }
 }
 
-// ======= DOM =======
 const inventory = new Inventory();
 
-const nameInput = document.getElementById("name");
-const priceInput = document.getElementById("price");
-const quantityInput = document.getElementById("quantity");
+// Элементүүдээ JS-д холбох
 const addBtn = document.getElementById("addBtn");
+const nameInput = document.getElementById("itemName");
+const priceInput = document.getElementById("itemPrice");
+const quantityInput = document.getElementById("itemQuantity");
 const list = document.getElementById("list");
 const totalSpan = document.getElementById("total");
 
-// ======= UI update =======
 function render() {
-  list.innerHTML = "";
-
-  inventory.items.forEach(item => {
-    const li = document.createElement("li");
-
-    // эхлээд fade-in төлөв
-    li.classList.add("fade-in");
-
-    li.innerHTML = `
-      <strong>${item.name}</strong><br/>
-      price: $${item.price} | piece: ${item.quantity}<br/>
-      total: $${item.getTotalPrice()}
-      <br/>
-      <button>delete</button>
-    `;
-
-    // delete animation
-    li.querySelector("button").addEventListener("click", () => {
-      li.classList.add("fade-out");
-
-      // animation дууссаны дараа устгах
-      setTimeout(() => {
-        inventory.removeItem(item.name);
-        render();
-      }, 300);
+    list.innerHTML = "";
+    inventory.items.forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <div class="item-info">
+                <strong>${item.name}</strong>
+                <span>$${item.price} x ${item.quantity}</span>
+            </div>
+            <div class="item-total">$${item.getTotalPrice()}</div>
+            <button class="btn-delete" onclick="deleteItem('${item.name}')">Устгах</button>
+        `;
+        list.appendChild(li);
     });
-
-    list.appendChild(li);
-
-    // дараагийн frame дээр fade-in эхлүүлэх
-    requestAnimationFrame(() => {
-      li.classList.remove("fade-in");
-    });
-  });
-
-  totalSpan.textContent = inventory.getInventoryValue();
+    totalSpan.textContent = inventory.getInventoryValue();
 }
 
-
-// ======= EVENT =======
+// Нэмэх товчны үйлдэл
 addBtn.addEventListener("click", () => {
-  const name = nameInput.value;
-  const price = Number(priceInput.value);
-  const quantity = Number(quantityInput.value);
+    const name = nameInput.value.trim();
+    const price = Number(priceInput.value);
+    const qty = Number(quantityInput.value);
 
-  if (!name || price <= 0 || quantity <= 0) {
-    alert("must to fill all!");
-    return;
-  }
+    if (name && price > 0 && qty > 0) {
+        inventory.addItem(new Item(name, price, qty));
+        nameInput.value = "";
+        priceInput.value = "";
+        quantityInput.value = "";
+        render();
+    } else {
+        alert("Мэдээллээ бүрэн оруулна уу!");
+    }
+});
 
-  const item = new Item(name, price, quantity);
-  inventory.addItem(item);
+// Устгах функц
+window.deleteItem = (name) => {
+    inventory.removeItem(name);
+    render();
+};
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
 
-  nameInput.value = "";
-  priceInput.value = "";
-  quantityInput.value = "";
-
-  render();
+themeToggle.addEventListener('click', () => {
+    // dark-theme class-ийг нэмэх/хасах
+    body.classList.toggle('dark-theme');
+    
+    // Товчлуурын дүрсийг солих
+    if (body.classList.contains('dark-theme')) {
+        themeToggle.textContent = '☀️'; // Dark mode бол нар харуулна
+    } else {
+        themeToggle.textContent = '🌙'; // Light mode бол сар харуулна
+    }
 });
