@@ -25,17 +25,18 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin-top: 100px;
             background-color: var(--main-bg);
             color: var(--main-text);
             transition: background-color 0.3s, color 0.3s;
-            margin-left: -1px;
+            margin: 10px;
+            padding: 100px 20px 40px 20px;
+            /* top padding for fixed header */
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin-top: 100px;
-            padding: 40px 20px -10px 20px;
+            align-items: flex-start;
+            /* consistent vertical alignment */
         }
+
 
         .dropdown-container {
             position: absolute;
@@ -47,9 +48,9 @@
 
         .custom-dropdown {
             position: relative;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+            background: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
             cursor: pointer;
             outline: none;
             font-size: 0.85rem;
@@ -68,14 +69,14 @@
             top: calc(100% + 5px);
             left: 0;
             right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            list-style: none;
             padding: 5px;
             margin: 0;
+            background: var (--main-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            list-style: none;
             display: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1)
+            box-shadow: 0 0 15px var(--accent-color);
         }
 
         .custom-dropdown.open .dropdown-list {

@@ -13,6 +13,7 @@
             --card-bg: oklch(98.1% 0.003 247.9);
             --border-color: oklch(90% 0.01 250);
         }
+
         .dark-theme {
             --main-bg: oklch(22.6% 0 0);
             --main-text: oklch(95.5% 0.009 224.2);
@@ -20,34 +21,44 @@
             --card-bg: oklch(28.4% 0 0);
             --border-color: oklch(40% 0.01 224.2);
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin-top: 300px;
             background-color: var(--main-bg);
             color: var(--main-text);
             transition: background-color 0.3s, color 0.3s;
-            margin-left: -1px;
+            margin:10px;
+            padding: 100px 20px 40px 20px;
+            /* top padding for fixed header */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* consistent vertical alignment */
         }
 
+
         button {
-            margin: 5px;
-            padding: 8px 15px;
+            padding: 10px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-color);
             background: var(--accent-color);
             color: var(--main-bg);
-            border: 1px solid var(--accent-color);
-            border-radius: 20px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 600;
             box-shadow: 0 0 15px var(--accent-color);
+            transition: all 0.2s;
         }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
 
         .counter-container {
             text-align: center;
             margin-top: 50px;
         }
-
-
     </style>
 </head>
 

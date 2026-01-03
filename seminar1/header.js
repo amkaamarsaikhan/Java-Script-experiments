@@ -1,55 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
 
+    // --- HEADER STYLE ---
     const style = document.createElement('style');
     style.textContent = `
-        .site-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: oklch(98.1% 0.003 247.9);
-            border-bottom: 1px solid oklch(90% 0.01 250);
-            padding: 16px 40px;
-            display: flex;
-            justify -content: center;
-            align-items: center;
-            z-index: 1000;
-            
-        }
+.site-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
 
-        .navigation ul {
-            width: 70%;
-            display: flex;
-            justify-content: space-around;
-            list-style: none;
-            gap: 30px;
-            margin: 10px;
-            padding: 0;
-        }
+.navigation ul {
+    display: flex;
+    gap: 50px;
+    list-style: none;
+    margin-left: 250px;
+    padding: 0;
+}
 
-        .navigation a { 
-            text-decoration: none; 
-            color: oklch(32.1% 0.043 250.7); 
-            font-weight: 500; font-size: 16px; 
-            transition: color 0.3s ease; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; } 
+.navigation a {
+    text-decoration: none;
+    color: var(--main-text);
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-        .navigation a:hover { 
-            color: oklch(65.8% 0.147 248.8) }
+.navigation a:hover {
+    color: var(--accent-color);
+}
 
-        .theme-btn-header {
-            border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            background: oklch(65.8% 0.147 248.8);
-            color: white;
-            font-weight: 600;
-        }
+/* Header theme button style */
+.theme-btn-header {
+margin-right: 40px;
+    background: var(--accent-color);
+    color: var(--main-bg);
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 8px 15px;
+    box-shadow: 0 0 15px var(--accent-color);
+}
     `;
     document.head.appendChild(style);
 
+    // --- HEADER HTML ---
     const header = document.createElement('header');
     header.className = 'site-header';
 
@@ -61,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ['Work 1', 'Work 2', 'Work 3', 'Work 4'].forEach((name, i) => {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = `/work${i + 1}.html`;
+        a.href = `work${i + 1}.html`;
         a.textContent = name;
         li.appendChild(a);
         ul.appendChild(li);
@@ -69,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     nav.appendChild(ul);
 
+    // --- THEME BUTTON ---
     const themeBtn = document.createElement('button');
     themeBtn.className = 'theme-btn-header';
     themeBtn.textContent = '🌙 Dark';
@@ -82,5 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     header.appendChild(nav);
     header.appendChild(themeBtn);
+
     body.prepend(header);
+    body.style.paddingTop = '100px';
 });

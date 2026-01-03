@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>dark-theme</title>
     <link rel="stylesheet" href="index.css">
-        <link rel="icon" href="images/js-favicon.png">
+    <link rel="icon" href="images/js-favicon.png">
     <style>
         :root {
             --main-bg: oklch(100% 0 0);
@@ -27,10 +27,16 @@
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--main-bg);
             color: var(--main-text);
-            transition: all 0.5s ease;
-            margin-left: -1px;
-
+            transition: background-color 0.3s, color 0.3s;
+            margin: 10px;
+            padding: 100px 20px 40px 20px;
+            /* top padding for fixed header */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* consistent vertical alignment */
         }
+
 
         #theme-toggle-btn {
             padding: 10px 20px;
