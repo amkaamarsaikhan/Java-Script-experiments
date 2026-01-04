@@ -1,59 +1,51 @@
-# Java-Script-experiments
-JavaScript DOM (Document Object Model) гэдэг нь вэб хөтөч (browser) таны бичсэн HTML кодыг хүлээж аваад, түүнийг програмчлалын хэлээр өөрчилж, удирдаж болохуйц "Мод" (Tree) хэлбэрийн бүтэц рүү хөрвүүлснийг хэлнэ.
+# 🌐 JavaScript DOM (Document Object Model) Тайлал
 
-Энгийнээр хэлбэл, DOM бол HTML болон JavaScript-ийг холбогч гүүр юм.
+Энэхүү баримт бичиг нь JavaScript-ийн амин сүнс болох **DOM**-ийн тухай ойлголтыг өгөхөд зориулагдсан.
 
-1. DOM хэрхэн ажилладаг вэ? (Модны бүтэц)
+---
 
-Вэб хуудсыг ачаалах үед хөтөч нь HTML-ийг шаталсан бүтэцтэй объект болгодог. Үүнийг DOM Tree гэж нэрлэдэг. HTML-ийн таг болгон энэ модны нэг "зангилаа" (Node) буюу объект болно.
+## 📌 1. DOM гэж юу вэ?
 
-Document: Хамгийн дээд талын үндэс (Root).
+**DOM** нь вэб хөтөч HTML кодыг уншаад програмчлалын хэлээр (JavaScript) удирдаж болохуйц болгон хөрвүүлсэн **"Мод" (Tree)** хэлбэрийн бүтэц юм. Энэ нь HTML болон JavaScript-ийг холбох гүүр болдог.
 
-Elements: <div>, <h1>, <p> зэрэг тагууд.
 
-Attributes: class, id, src гэх мэт шинж чанарууд.
 
-Text: Таг доторх бичвэрүүд.
+### 🌳 Модны бүтэц (Node-ийн төрлүүд)
+* **Document**: Хамгийн дээд талын үндэс (Root).
+* **Elements**: `<div>`, `<h1>`, `<p>` зэрэг HTML тагууд.
+* **Attributes**: `class`, `id`, `src` зэрэг шинж чанарууд.
+* **Text**: Таг доторх бодит бичвэрүүд.
 
-2. DOM-той ажиллах үндсэн аргууд
+---
 
-JavaScript ашиглан DOM-оос элемент олж авах, өөрчлөх үндсэн үйлдлүүдийг доор харуулав:
+## 🛠 2. DOM-той ажиллах үндсэн аргууд
 
-А. Элементийг сонгох (Selecting)
+### А. Элементийг сонгох (Selecting)
+Элементийг өөрчлөхийн тулд эхлээд түүнийг JavaScript дээр "барьж" авах хэрэгтэй.
 
-JavaScript
-const title = document.getElementById('main-title'); // ID-аар нь
-const buttons = document.getElementsByClassName('btn'); // Class-аар нь
-const para = document.querySelector('p'); // CSS selector-оор (эхнийхийг)
-const allParas = document.querySelectorAll('p'); // Бүх параграфыг
-Б. Агуулгыг өөрчлөх (Manipulating)
+| Арга | Тайлбар |
+| :--- | :--- |
+| `getElementById()` | ID-аар нь ганц элемент сонгох |
+| `querySelector()` | CSS selector ашиглан хамгийн эхний элементийг сонгох |
+| `querySelectorAll()` | Бүх ижил төрлийн элементийг жагсаалтаар сонгох |
 
-JavaScript
+```javascript
+const title = document.getElementById('main-title');
+const para = document.querySelector('.description');
+
+Агуулга болон стиль өөрчлөх (Manipulating)
 title.textContent = "Сайн байна уу!"; // Текст солих
-title.style.color = "blue"; // CSS загвар өөрчлөх
-title.classList.add('active'); // Class нэмэх
-В. Шинэ элемент үүсгэх
+title.style.color = "blue";           // Өнгө солих
+title.classList.add('active');        // Класс нэмэх
 
-JavaScript
-const newDiv = document.createElement('div'); // Шинэ div үүсгэх
-newDiv.innerHTML = "<span>Шинэ текст</span>"; // Дотор нь HTML хийх
-document.body.appendChild(newDiv); // Body дотор нэмж байрлуулах
-3. DOM Events (Үйл явдал)
+Шинэ элемент үүсгэх
+const newDiv = document.createElement('div');
+newDiv.innerHTML = "<b>Шинэ текст</b>";
+document.body.appendChild(newDiv);
 
-Хэрэглэгч вэб хуудас дээр үйлдэл хийх үед (товч дарах, хулганаа хөдөлгөх) DOM үүнийг мэдэрдэг. Үүнийг Event Listener ашиглан удирдана.
+Хэрэглэгчийн үйлдлийг (товч дарах, хулгана гүйлгэх) мэдэрч хариу үзүүлэх.
 
-JavaScript
 const btn = document.querySelector('#myButton');
-
 btn.addEventListener('click', () => {
     alert('Товч дарагдлаа!');
 });
-4. Яагаад DOM чухал вэ?
-
-Хэрэв DOM байхгүй байсан бол:
-
-Вэб хуудас зөвхөн "статик" (хөдөлгөөнгүй) байх байсан.
-
-Товчлуур дарахад өнгө солигдох, мэдээлэл шинэчлэгдэх боломжгүй.
-
-Орчин үеийн Facebook, Instagram шиг хуудсыг дахин ачаалахгүйгээр (Refresh) мэдээлэл солигддог системүүд ажиллахгүй.
