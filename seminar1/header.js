@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
-
-    // --- HEADER STYLE ---
     const style = document.createElement('style');
     style.textContent = `
 .site-header {
@@ -38,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     color: var(--accent-color);
 }
 
-/* Header theme button style */
 .theme-btn-header {
-margin-right: 40px;
+    margin-right: 40px;
     background: var(--accent-color);
     color: var(--main-bg);
     border: 1px solid var(--accent-color);
@@ -89,5 +86,5 @@ margin-right: 40px;
     header.appendChild(themeBtn);
 
     body.prepend(header);
-    body.style.paddingTop = '100px';
+    body.style.paddingTop = '120px';
 });
